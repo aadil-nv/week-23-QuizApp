@@ -1,8 +1,18 @@
-import DropOptions from "@/components/DropDownOptions";
-import Button from "@/components/Button"
+'use client'
+
+import DropOptions from "@/components/DropDownOptions/page";
+import Button from "@/components/Button/page"
+import useQuiz from "@/store/page";
+
 
 
 export default function Home() {
+
+    const quizConfig = useQuiz(state=>state.config)
+    const addNumberOfQuestions = useQuiz(state=>state.addNumberOfQuestions);
+    console.log("Quiz config is---",quizConfig);
+    
+
   return (
     <section className="flex flex-col justify-center items-center m-4 md:m-10">
       {/* -------------------------------------------------Heading--------------------------------------------------------- */}
@@ -31,6 +41,7 @@ export default function Home() {
             defaultValue={10}
             id="first_name"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            onChange={(e)=>addNumberOfQuestions(Number(e.target.value))}
             required
           />
         </div>

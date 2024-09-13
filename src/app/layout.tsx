@@ -1,34 +1,33 @@
-import type { Metadata } from "next";
+"use client"; // Client component
+
 import localFont from "next/font/local";
 import "./globals.css";
+import useQuiz from "@/store/page";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
-
-export const metadata: Metadata = {
-  title: "Quizz App",
-  description: "Created f or learners",
-};
 
 export default function RootLayout({
   children,
+  quiz,
 }: Readonly<{
   children: React.ReactNode;
+  quiz: React.ReactNode;
 }>) {
+  // Get the configuration from Zustand store
+  const config = useQuiz((state) => state.config);
+  
+  // Determine what to render based on config status
+  const render = config.status ? quiz : children;
+
+  // Debugging logs
+  console.log("Children:", children);
+  console.log("Quiz:", quiz);
+  console.log("Config Status:", config.status);
+  console.log("Render:", render);
+
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body>
+        {render} 
       </body>
     </html>
   );
