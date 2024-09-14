@@ -17,7 +17,7 @@ export default function Index() {
   }));
 
   const types = ["boolean", "multiple"];
-  const levels = ["Easy", "Medium", "Hard"];
+  const levels = ["easy", "medium", "hard"];
 
   useEffect(() => {
     async function fetchCategoryData() {
