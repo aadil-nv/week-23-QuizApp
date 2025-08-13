@@ -1,6 +1,5 @@
 "use client"; // Client component
 
-import localFont from "next/font/local";
 import "./globals.css";
 import useQuiz from "@/store/page";
 
