@@ -3,8 +3,14 @@
 import useQuiz from "@/store/page";
 import React, { useEffect, useState } from "react";
 import { FaArrowRight, FaTrophy, FaRedo } from "react-icons/fa";
-import { Player } from "@lottiefiles/react-lottie-player";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
+
+// Dynamically import Lottie Player with no SSR
+const Player = dynamic(
+  () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
+  { ssr: false }
+);
 
 interface Question {
   category: string;
@@ -24,10 +30,16 @@ export default function Quiz() {
   const [score, setScore] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   
   const config = useQuiz((state) => state.config);
   const setScoreInStore = useQuiz((state) => state.addScore);
   const router = useRouter();
+
+  // Ensure we're on the client side
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     async function fetchQuestions() {
@@ -67,8 +79,10 @@ export default function Quiz() {
       }
     }
 
-    fetchQuestions();
-  }, [config]);
+    if (config && isClient) {
+      fetchQuestions();
+    }
+  }, [config, isClient]);
 
   const handleAnswerClick = (answer: string) => {
     if (selectedAnswer !== null) return;
@@ -100,8 +114,19 @@ export default function Quiz() {
   };
 
   const restartQuiz = () => {
-    window.location.reload();
+    if (typeof window !== 'undefined') {
+      window.location.reload();
+    }
   };
+
+  // Don't render anything until we're on the client
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent"></div>
+      </div>
+    );
+  }
 
   // Quiz completion screen
   if (quizCompleted) {
