@@ -7,6 +7,8 @@ export type ConfigType = {
   type: string;
   status: string;
   score: number;
+  result: number;
+  name:string 
 };
 
 const defaultConfig: ConfigType = {
@@ -16,6 +18,8 @@ const defaultConfig: ConfigType = {
   type: "",
   status: "",
   score: 0,
+  result: 0 ,
+  name:""
 };
 
 type QuizState = {
@@ -26,11 +30,14 @@ type QuizState = {
   addStatus: (status: string) => void;
   addScore: (score: number) => void;
   addType: (type: string) => void;
+  setResult: (res: number) => void; 
+  addName:(name:string)=>void
+  // Rename to 'setResult' for clarity
 };
 
 const useQuiz = create<QuizState>((set) => ({
   config: defaultConfig,
-
+  
   addLevel: (level) => set((state) => ({
     config: { ...state.config, level },
   })),
@@ -44,11 +51,17 @@ const useQuiz = create<QuizState>((set) => ({
     config: { ...state.config, status },
   })),
   addScore: (score) => set((state) => ({
-    config: { ...state.config, score:state.config.score+1 },
+    config: { ...state.config, score: state.config.score + score }, // Update score correctly
   })),
   addType: (type) => set((state) => ({
     config: { ...state.config, type },
   })),
+  setResult: (res) => set((state) => ({
+    config: { ...state.config, result: res }, // Correctly update 'result'
+  })),
+  addName: (name)=> set((state)=>({
+    config: {...state.config,name},
+  }))
 }));
 
 export default useQuiz;

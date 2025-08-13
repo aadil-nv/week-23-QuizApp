@@ -9,7 +9,6 @@ import useQuiz from "@/store/page";
 export default function Home() {
 
     const quizConfig = useQuiz(state=>state.config)
-    const addNumberOfQuestions = useQuiz(state=>state.addNumberOfQuestions);
     console.log("Quiz config is---",quizConfig);
     
 
@@ -28,22 +27,7 @@ export default function Home() {
 
       <section className="p-6 md:p-10 my-8 mx-auto rounded-lg shadow-2xl w-[90%] md:w-[65%] bg-gray-900 dark:bg-gray-900 shadow-gray-900/70 border-rounded">
         <div>
-          <label
-            htmlFor="first_name"
-            className="block mb-2 text-sm font-medium text-white"
-          >
-            Number of Questions
-          </label>
-          <input
-            type="number"
-            min={0}
-            max={20}
-            defaultValue={10}
-            id="first_name"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            onChange={(e)=>addNumberOfQuestions(Number(e.target.value))}
-            required
-          />
+         
         </div>
 
         {/* -------------------------------------------------Selection---------------------------------------------- */}
